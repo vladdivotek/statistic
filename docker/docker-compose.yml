@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+
+    # PHP service
+    ad2lynx-php:
+        build: ./php
+        container_name: ad2lynx-php
+        working_dir: /var/www
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        ports:
+            - 8001:80
+        volumes:
+            - ~/.ssh:/root/.ssh
+            - ../:/var/www
+            - ./php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - ad2lynx-network
+
+    # MySQL database service
+    ad2lynx-db:
+       image: mysql:8
+       container_name: ad2lynx-db
+       ports:
+           - "33061:3306"
+       environment:
+           MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+           MYSQL_PASSWORD: ${DB_PASSWORD}
+           MYSQL_USER: ${DB_USERNAME}
+           MYSQL_DATABASE: ${DB_DATABASE}
+       volumes:
+           - ./mysql/data:/var/lib/mysql
+       env_file:
+           - ./.env
+       networks:
+           - ad2lynx-network
+
+    # Nginx service
+    ad2lynx-nginx:
+        image: nginx:alpine
+        container_name: ad2lynx-nginx
+        ports:
+            - 8000:80
+        volumes:
+            - ../:/var/www
+            - ./nginx/:/etc/nginx/conf.d/
+        networks:
+            - ad2lynx-network
+        links:
+            - ad2lynx-php
+        depends_on:
+            - ad2lynx-db
+
+networks:
+    ad2lynx-network:
+        driver: bridge
