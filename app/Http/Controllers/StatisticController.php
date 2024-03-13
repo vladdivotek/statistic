@@ -18,11 +18,7 @@ class StatisticController extends Controller
 
     public function generate()
     {
-
-        if (DB::table(Statistic::TABLE)->count() == 0) {
-            $mergeItems = $this->fetchData();
-            Statistic::query()->insert($mergeItems);
-        }
+        if (DB::table(Statistic::TABLE)->count() == 0) $mergeItems = $this->fetchData();
 
         $statisticItems = DB::table(Statistic::TABLE)
             ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
@@ -57,7 +53,7 @@ class StatisticController extends Controller
             return response()->json('Error while fetching data from resources: ' . $e->getMessage());
         }
 
-        try {
+        if (count($endpoint1Items) > 0 && count($endpoint2Items) > 0) {
             foreach ($endpoint1Items as $endpoint1Item) {
                 foreach ($endpoint2Items as $endpoint2Item) {
                     if ($endpoint1Item['name'] == $endpoint2Item['dimensions']['ad_id']) {
@@ -77,10 +73,10 @@ class StatisticController extends Controller
             usort($mergeItems, function($a, $b) {
                 return $b['impressions'] - $a['impressions'];
             });
-        } catch (Exception $e) {
-            return response()->json('Error while processing data from resources: ' . $e->getMessage());
-        }
 
-        return $mergeItems;
+            Statistic::query()->insert($mergeItems);
+        } else {
+            return response()->json('Error while processing data from resources.');
+        }
     }
 }

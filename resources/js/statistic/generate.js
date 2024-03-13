@@ -5,12 +5,14 @@ document.querySelector('#generate_data').addEventListener('click', function () {
     let submit = this;
     let action = submit.dataset.action;
 
-    this.setAttribute('disabled', true);
-
     axios.get(action)
         .then(function (response) {
-            createTable(response.data.statisticItems);
-            document.querySelector('#generate_data').remove();
+            if (response.data.statisticItems.length > 0) {
+                createTable(response.data.statisticItems);
+                document.querySelector('#generate_data').remove();
+            } else {
+                alert('Error while fetching data from resources');
+            }
         })
         .catch(function (error) {
             console.log(error);
