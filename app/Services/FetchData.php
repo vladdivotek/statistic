@@ -11,8 +11,8 @@ class FetchData
     public static function getData()
     {
         $endpoint1Items = $endpoint2Items = $mergeItems = null;
-        $endpoint1Url = env('ENDPOINT_1');
-        $endpoint2Url = env('ENDPOINT_2');
+        $endpoint1Url = config('statistic.endpoint_1');
+        $endpoint2Url = config('statistic.endpoint_2');
 
         if (!$endpoint1Url || !$endpoint2Url) return response()->json('Endpoints urls doesnt exist');
 

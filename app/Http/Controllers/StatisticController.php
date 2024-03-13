@@ -19,9 +19,9 @@ class StatisticController extends Controller
 
     public function generate()
     {
-        if (DB::table(Statistic::TABLE)->count() == 0) $mergeItems = FetchData::getData();
+        if (DB::table((new Statistic())->getTable())->count() == 0) $mergeItems = FetchData::getData();
 
-        $statisticItems = DB::table(Statistic::TABLE)
+        $statisticItems = DB::table((new Statistic())->getTable())
             ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
             ->get();
 
@@ -32,7 +32,7 @@ class StatisticController extends Controller
     {
         $request->validate(['ad_id' => 'required']);
 
-        $searchResult = DB::table(Statistic::TABLE)
+        $searchResult = DB::table((new Statistic())->getTable())
             ->where('ad_id', $request->ad_id)
             ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
             ->get();

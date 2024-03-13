@@ -9,7 +9,5 @@ class Statistic extends Model
 {
     use HasFactory;
 
-    const TABLE = 'statistics';
-
     protected $fillable = ['ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi'];
 }
