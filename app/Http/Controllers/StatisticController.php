@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Statistic;
 use App\Services\FetchData;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Schema;
 
 class StatisticController extends Controller
 {

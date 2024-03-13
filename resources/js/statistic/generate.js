@@ -7,6 +7,7 @@ document.querySelector('#generate_data').addEventListener('click', function () {
 
     axios.get(action)
         .then(function (response) {
+            if (response.data.fetchDataStatus) alert(response.data.fetchDataStatus.original);
             if (response.data.statisticItems.length > 0) {
                 createTable(response.data.statisticItems);
                 document.querySelector('#generate_data').remove();
