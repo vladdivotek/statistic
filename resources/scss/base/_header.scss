@@ -1,0 +1,18 @@
+.header {
+    height: 70px;
+    background: #fff;
+    box-shadow: 0 2px 5px #ccc;
+
+    > .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .site-name {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 20px;
+    }
+}

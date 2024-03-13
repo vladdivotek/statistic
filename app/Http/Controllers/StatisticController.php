@@ -11,7 +11,39 @@ use Illuminate\Support\Facades\Schema;
 
 class StatisticController extends Controller
 {
+    public function index()
+    {
+        return view('statistic.index');
+    }
+
     public function generate()
+    {
+
+        if (DB::table(Statistic::TABLE)->count() == 0) {
+            $mergeItems = $this->fetchData();
+            Statistic::query()->insert($mergeItems);
+        }
+
+        $statisticItems = DB::table(Statistic::TABLE)
+            ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
+            ->get();
+
+        return response()->json(['statisticItems' => $statisticItems]);
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate(['ad_id' => 'required']);
+
+        $searchResult = DB::table(Statistic::TABLE)
+            ->where('ad_id', $request->ad_id)
+            ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
+            ->get();
+
+        return response()->json(['searchResult' => $searchResult]);
+    }
+
+    public function fetchData()
     {
         $endpoint1Items = $endpoint2Items = $mergeItems = null;
 
@@ -49,14 +81,6 @@ class StatisticController extends Controller
             return response()->json('Error while processing data from resources: ' . $e->getMessage());
         }
 
-        if (DB::table(Statistic::TABLE)->count() == 0) Statistic::query()->insert($mergeItems);
-
-        $statisticItems = DB::table(Statistic::TABLE)
-            ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
-            ->get();
-
-        dd($statisticItems);
-
-        return response()->json(['statisticItems' => $statisticItems]);
+        return $mergeItems;
     }
 }
