@@ -19,13 +19,13 @@ class StatisticController extends Controller
 
     public function generate()
     {
-        if (DB::table((new Statistic())->getTable())->count() == 0) $mergeItems = FetchData::getData();
+        $fetchDataStatus = DB::table((new Statistic())->getTable())->count() == 0 ? FetchData::getData() : null;
 
         $statisticItems = DB::table((new Statistic())->getTable())
             ->select('ad_id', 'impressions', 'clicks', 'unique_clicks', 'leads', 'conversion', 'roi')
             ->get();
 
-        return response()->json(['statisticItems' => $statisticItems]);
+        return response()->json(['statisticItems' => $statisticItems, 'fetchDataStatus' => $fetchDataStatus]);
     }
 
     public function search(Request $request)

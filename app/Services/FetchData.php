@@ -52,6 +52,6 @@ class FetchData
             return response()->json('Error while processing data from resources.');
         }
 
-        return $mergeItems;
+        return response()->json('Success');
     }
 }
