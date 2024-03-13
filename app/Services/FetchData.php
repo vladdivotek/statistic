@@ -17,10 +17,10 @@ class FetchData
         if (!$endpoint1Url || !$endpoint2Url) return response()->json('Endpoints urls doesnt exist');
 
         try {
-            $responseEndpoint1 = Http::get(env('ENDPOINT_1'));
+            $responseEndpoint1 = Http::get($endpoint1Url);
             $endpoint1Items = $responseEndpoint1->json();
 
-            $responseEndpoint2 = Http::get('https://submitter.tech/test-task/endpoint2.json');
+            $responseEndpoint2 = Http::get($endpoint2Url);
             $endpoint2Items = $responseEndpoint2->json()['data']['list'];
         } catch (Exception $e) {
             return response()->json('Error while fetching data from resources: ' . $e->getMessage());

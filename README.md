@@ -9,4 +9,7 @@
 - npm run build
 - chmod -R 777 storage/
 - php artisan migrate
+- Добавить в ларовский енв константы:
+ - - ENDPOINT_1=https://submitter.tech/test-task/endpoint1.json
+ - - ENDPOINT_2=https://submitter.tech/test-task/endpoint2.json
 - Заходим по адресу http://localhost:8000/statistic
